@@ -4,7 +4,6 @@ pipeline {
         stage('Download project from GitHub') {
             steps{
                 echo "=====${STAGE_NAME}====="
-                cleanWs()
                 sh 'git clone https://github.com/mvolkov82/feedcreator.git'
                 echo "Download completed"
             }
