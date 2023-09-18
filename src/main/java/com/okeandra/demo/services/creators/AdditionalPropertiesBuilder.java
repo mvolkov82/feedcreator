@@ -12,7 +12,7 @@ public class AdditionalPropertiesBuilder {
     public void addProperties(List<Offer> offers, Map<String, ExcelProperties> excelPropertiesMap) {
         for (Offer offer : offers) {
             String id = offer.getVendorCode();
-            System.out.println("Добавляем properties для ".concat(id));
+            System.out.format("Adding properties for %s %n", id);
             if (excelPropertiesMap.containsKey(id)) {
                 ExcelProperties props = excelPropertiesMap.get(id);
                 offer.setRootCategory(props.getRootCategory());

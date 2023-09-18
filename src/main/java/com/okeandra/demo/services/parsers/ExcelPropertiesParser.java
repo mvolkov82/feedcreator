@@ -55,7 +55,7 @@ public class ExcelPropertiesParser {
 
                     // -------- TODO Доделать остальные поля
                     excelMap.put(itemId, excelProperties);
-                    System.out.println(i + ") Parse excel file. Line " + i + ") Item  ".concat(itemId));
+                    System.out.format("Parse excel. Line %s, item=%s %n", i, itemId);
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
@@ -71,7 +71,10 @@ public class ExcelPropertiesParser {
         String value = "";
         try {
             value = row.getCell(col).getStringCellValue();
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+//            System.out.println("Empty cell");
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
         obj.accept(value);
@@ -81,6 +84,8 @@ public class ExcelPropertiesParser {
         double value = 0D;
         try {
             value = row.getCell(col).getNumericCellValue();
+        }catch (NullPointerException e) {
+//            System.out.println("Empty cell");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -95,7 +100,12 @@ public class ExcelPropertiesParser {
                     .filter(v->v.matches("[0-9]+"))
                     .collect(Collectors.toSet());
             obj.accept(setBarcodes);
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+//            System.out.println("Empty cell");
+            obj.accept(new HashSet<>());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
             obj.accept(new HashSet<>());
         }
     }
