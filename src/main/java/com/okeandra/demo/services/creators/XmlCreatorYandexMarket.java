@@ -17,27 +17,6 @@ public class XmlCreatorYandexMarket extends XmlCreator {
         Element root = document.createElement("offers");
         document.appendChild(root);
 
-            /*
-            <offer type="vendor.model" available="true" id="26605093">
-            <url>https://okeandra.ru/product/vitex-aloe-vera-krem-dlya-ruk-pitatelnyy-150-ml</url>
-            <price>196.0</price>
-            <currencyId>RUB</currencyId>
-            <categoryId>2670899</categoryId>
-            <picture>https://static-ru.insales.ru/images/products/1/1056/514221088/AloeV44.jpg</picture>
-            <picture>https://static-ru.insales.ru/images/products/1/1367/514229591/Vitex_AloeVera_KremRukiPitat.jpg</picture>
-            <store>true</store>
-            <pickup>true</pickup>
-            <delivery>true</delivery>
-            <vendor>Витекс</vendor>
-            <vendorCode>AUT00000004</vendorCode>
-            <barcode>4810153010568</barcode>
-            <model>"Aloe Vera" Крем для рук ''Питательный'' 150 мл (Витекс)</model>
-            <description>Уникальный по составу крем интенсивно питает, смягчает и разглаживает кожу рук. Сок Алоэ и витамин Е восстанавливают оптимальный баланс влаги в коже, придавая ей мягкость и нежность, упругость и эластичность. Масло виноградных косточек богато насыщенными жирными кислотами, питает и разглаживает кожу рук. Результат: Гладкая и нежная кожа рук.</description>
-            <weight>0.180</weight>
-            <country_of_origin>Беларусь</country_of_origin>
-            </offer>
-            */
-
         for (Offer element : ymlObject.getBody()) {
             OfferYandex offer = (OfferYandex) element;
             Element blockOffer = getBlockOffer(document, root, offer);

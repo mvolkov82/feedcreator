@@ -57,6 +57,7 @@ public abstract class XmlCreator {
         }
         return value;
     }
+
     public Document getDocument(YmlObject ymlObject) {
         DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder build = null;
@@ -123,47 +124,67 @@ public abstract class XmlCreator {
     }
 
     public void addStringElement(Document document, Element blockOffer, String tagName, Supplier<String> supplier) {
-        Element element = document.createElement(tagName);
-        String value = supplier.get();
-        if (value == null) {
-            value = "";
+        try {
+            Element element = document.createElement(tagName);
+            String value = supplier.get();
+            if (value == null) {
+                value = "";
+            }
+            element.appendChild(document.createTextNode(value));
+            blockOffer.appendChild(element);
+        } catch (Exception e) {
+            System.out.println("Exception on generating XML file");
         }
-        element.appendChild(document.createTextNode(value));
-        blockOffer.appendChild(element);
     }
 
     public void addElementFromSet(Document document, Element blockOffer, String tagName, Set<String> values) {
-        if (values != null) {
-            values.forEach( pic -> addStringElement(document, blockOffer, tagName, pic));
+        try {
+            if (values != null) {
+                values.forEach(pic -> addStringElement(document, blockOffer, tagName, pic));
+            }
+        } catch (Exception e) {
+            System.out.println("Exception on generating XML file");
         }
     }
 
     public void addStringElement(Document document, Element blockOffer, String tagName, String value) {
-        Element element = document.createElement(tagName);
-        if (value == null) {
-            value = "";
+        try {
+            Element element = document.createElement(tagName);
+            if (value == null) {
+                value = "";
+            }
+            element.appendChild(document.createTextNode(value));
+            blockOffer.appendChild(element);
+        } catch (Exception e) {
+            System.out.println("Exception on generating XML file");
         }
-        element.appendChild(document.createTextNode(value));
-        blockOffer.appendChild(element);
     }
 
     public void addBooleanElement(Document document, Element blockOffer, String tagName, Supplier<Boolean> supplier) {
-        Element element = document.createElement(tagName);
-        Boolean value = supplier.get();
-        if (value == null) {
-            value = false;
+        try {
+            Element element = document.createElement(tagName);
+            Boolean value = supplier.get();
+            if (value == null) {
+                value = false;
+            }
+            element.appendChild(document.createTextNode(String.valueOf(value)));
+            blockOffer.appendChild(element);
+        } catch (Exception e) {
+            System.out.println("Exception on generating XML file");
         }
-        element.appendChild(document.createTextNode(String.valueOf(value)));
-        blockOffer.appendChild(element);
     }
 
     public void addStringFixedElement(Document document, Element blockOffer, String tagName, String value) {
-        if (value == null) {
-            value = "";
+        try {
+            if (value == null) {
+                value = "";
+            }
+            Element element = document.createElement(tagName);
+            element.appendChild(document.createTextNode(value));
+            blockOffer.appendChild(element);
+        } catch (Exception e) {
+            System.out.println("Exception on generating XML file");
         }
-        Element element = document.createElement(tagName);
-        element.appendChild(document.createTextNode(value));
-        blockOffer.appendChild(element);
     }
 
     public Element getBlockOffer(Document document, Element root, Offer offer) {
@@ -180,7 +201,7 @@ public abstract class XmlCreator {
         String postfix = "\">";
         int startIndex = ymlHeader.indexOf(prefix);
         int endIndex = ymlHeader.indexOf(postfix);
-        String feedDateTime = ymlHeader.substring(startIndex+prefix.length(), endIndex);
+        String feedDateTime = ymlHeader.substring(startIndex + prefix.length(), endIndex);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String feedWithCurrentDateTime = LocalDateTime.now().format(formatter);
         return ymlHeader.replace(feedDateTime, feedWithCurrentDateTime);

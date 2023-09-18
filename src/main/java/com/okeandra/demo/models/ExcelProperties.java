@@ -1,5 +1,7 @@
 package com.okeandra.demo.models;
 
+import java.util.Set;
+
 public class ExcelProperties {
     private String itemId;
     private String itemName;
@@ -26,6 +28,7 @@ public class ExcelProperties {
     private int wildberriesPrice;
     private int sberMegeMarketPrice;
     private int groupPricePrice;
+    private Set<String> additionalBarcode;
 
     public int getGroupPricePrice() {
         return groupPricePrice;
@@ -232,5 +235,13 @@ public class ExcelProperties {
 
     public void setSberMegeMarketPrice(int sberMegeMarketPrice) {
         this.sberMegeMarketPrice = sberMegeMarketPrice;
+    }
+
+    public Set<String> getAdditionalBarcode() {
+        return additionalBarcode;
+    }
+
+    public void setAdditionalBarcode(Set<String> additionalBarcode) {
+        this.additionalBarcode = additionalBarcode;
     }
 }

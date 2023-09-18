@@ -1,24 +1,24 @@
 package com.okeandra.demo.services.parsers;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
+
 import com.okeandra.demo.models.ExcelProperties;
-import com.okeandra.demo.models.Item;
-import com.okeandra.demo.models.WarehouseItemCount;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Component;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.*;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
 @Component
 public class ExcelPropertiesParser {
 
-    public Map<String, ExcelProperties> extractExcelItems (String xlsFileName) {
+    public Map<String, ExcelProperties> extractExcelItems(String xlsFileName) {
 
         Map<String, ExcelProperties> excelMap = new HashMap<>(20000);
 //        Warehouse ploshadStock = new Warehouse("PL", "Ploshad_Lenina");
@@ -49,11 +49,13 @@ public class ExcelPropertiesParser {
                     setStringValue(row, 11, excelProperties::setVidProduc);
                     setStringValue(row, 12, excelProperties::setRecommendedAge);
 
+                    getSetFromString(row, 25, ";", excelProperties::setAdditionalBarcode);
+
                     // -------- TODO Доделать остальные поля
                     excelMap.put(itemId, excelProperties);
-                } catch (NullPointerException e) {
-                    //TODO
-                    System.out.println("NPE - ExcelParser.class");
+                    System.out.println(i + ") Parse excel file. Line " + i + ") Item  ".concat(itemId));
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
             }
 
@@ -63,23 +65,32 @@ public class ExcelPropertiesParser {
         return excelMap;
     }
 
-    private  void setStringValue(HSSFRow row, int col, Consumer<String> obj) {
+    private void setStringValue(HSSFRow row, int col, Consumer<String> obj) {
         String value = "";
         try {
             value = row.getCell(col).getStringCellValue();
         } catch (Exception e) {
-            System.out.println("Ошибка при парсинге строки " +  row.getRowNum() +" в колонке " + col);
+            e.printStackTrace();
         }
         obj.accept(value);
     }
 
-    private  void setNumericValue(HSSFRow row, int col, Consumer<Double> obj) {
+    private void setNumericValue(HSSFRow row, int col, Consumer<Double> obj) {
         double value = 0D;
         try {
             value = row.getCell(col).getNumericCellValue();
         } catch (Exception e) {
-            System.out.println("Ошибка при парсинге строки " +  row.getRowNum() +" в колонке " + col);
+            e.printStackTrace();
         }
         obj.accept(value);
+    }
+
+    private void getSetFromString(HSSFRow row, int col, String separator, Consumer<Set<String>> obj) {
+        try {
+            String cellValue = row.getCell(col).getStringCellValue();
+            obj.accept(new HashSet<>(Arrays.asList(cellValue.split(separator))));
+        } catch (Exception e) {
+            obj.accept(new HashSet<>());
+        }
     }
 }

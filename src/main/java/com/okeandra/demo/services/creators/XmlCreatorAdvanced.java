@@ -22,7 +22,7 @@ public class XmlCreatorAdvanced extends XmlCreator {
             addDoubleElement(document, blockOffer, "price", offer::getPrice);
             addStringElement(document, blockOffer, "categoryId", offer::getCategoryId);
 
-            offer.getPicture().forEach( pic -> {
+            offer.getPicture().forEach(pic -> {
                 addStringElement(document, blockOffer, "picture", pic);
             });
 
@@ -30,6 +30,7 @@ public class XmlCreatorAdvanced extends XmlCreator {
             addStringElement(document, blockOffer, "vendor", offer::getVendor);
             addStringElement(document, blockOffer, "vendorCode", offer::getVendorCode);
             addStringElement(document, blockOffer, "barcode", offer::getBarcode);
+            addElementFromSet(document, blockOffer, "barcode", offer.getAdditionalBarcode());
             addStringElement(document, blockOffer, "description", offer::getDescription);
             addStringElement(document, blockOffer, "main-category", offer::getRootCategory);
             addStringElement(document, blockOffer, "destination", offer::getNaznachenie);
@@ -58,6 +59,5 @@ public class XmlCreatorAdvanced extends XmlCreator {
 
         return transformBodyToString(document);
     }
-
 
 }

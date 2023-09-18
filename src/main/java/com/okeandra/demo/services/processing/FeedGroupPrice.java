@@ -141,7 +141,7 @@ public class FeedGroupPrice implements Processing {
         List<Offer> offersFromInsalesFeed = null;
         if (isExcelPropertiesParsed) {
             offersFromInsalesFeed = ymlObject.getBody();
-            if (offersFromInsalesFeed != null & offersFromInsalesFeed.size() != 0) {
+            if (offersFromInsalesFeed != null && !offersFromInsalesFeed.isEmpty()) {
                 message = "Список офферов получен из YML. Количество товаров: " + offersFromInsalesFeed.size();
             } else {
                 message = "Офферы из YML не получены";

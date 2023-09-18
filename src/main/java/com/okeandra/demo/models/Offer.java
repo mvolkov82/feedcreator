@@ -25,6 +25,7 @@ public class Offer {
     private String vidProduc;
     private String recommendedAge;
     private Double weight;
+    private Set<String> additionalBarcode;
 
 
 
@@ -180,6 +181,13 @@ public class Offer {
         this.weight = weight;
     }
 
+    public Set<String> getAdditionalBarcode() {
+        return additionalBarcode;
+    }
+
+    public void setAdditionalBarcode(Set<String> additionalBarcode) {
+        this.additionalBarcode = additionalBarcode;
+    }
 
     @Override
     public String toString() {
