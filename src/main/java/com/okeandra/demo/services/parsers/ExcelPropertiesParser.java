@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import com.okeandra.demo.models.ExcelProperties;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -49,7 +51,7 @@ public class ExcelPropertiesParser {
                     setStringValue(row, 11, excelProperties::setVidProduc);
                     setStringValue(row, 12, excelProperties::setRecommendedAge);
 
-                    getSetFromString(row, 25, ";", excelProperties::setAdditionalBarcode);
+                    getBarcodesFromCell(row, 25, ";", excelProperties::setAdditionalBarcode);
 
                     // -------- TODO Доделать остальные поля
                     excelMap.put(itemId, excelProperties);
@@ -85,10 +87,14 @@ public class ExcelPropertiesParser {
         obj.accept(value);
     }
 
-    private void getSetFromString(HSSFRow row, int col, String separator, Consumer<Set<String>> obj) {
+    private void getBarcodesFromCell(HSSFRow row, int col, String separator, Consumer<Set<String>> obj) {
         try {
             String cellValue = row.getCell(col).getStringCellValue();
-            obj.accept(new HashSet<>(Arrays.asList(cellValue.split(separator))));
+            List<String> values = Arrays.asList(cellValue.split(separator));
+            Set<String> setBarcodes = values.stream()
+                    .filter(v->v.matches("[0-9]+"))
+                    .collect(Collectors.toSet());
+            obj.accept(setBarcodes);
         } catch (Exception e) {
             obj.accept(new HashSet<>());
         }
